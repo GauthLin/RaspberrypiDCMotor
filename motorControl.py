@@ -12,7 +12,7 @@ Motor2A = 27
 Motor2B = 22
 Motor2E = 17
 
-while true:
+while True:
 	GPIO.setup(Motor1A, GPIO.OUT)
 	GPIO.setup(Motor1B, GPIO.OUT)
 	GPIO.setup(Motor1E, GPIO.OUT)
