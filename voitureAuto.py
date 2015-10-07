@@ -76,12 +76,12 @@ def backward():
 def turnLeft():
 	GPIO.output(MotorDA, GPIO.HIGH)
         GPIO.output(MotorDB, GPIO.LOW)
-        GPIO.output(MotorGA, GPIO.LOW)
+        GPIO.output(MotorGA, GPIO.HIGH)
         GPIO.output(MotorGB, GPIO.HIGH)
 
 def turnRight():
 	GPIO.output(MotorDA, GPIO.LOW)
-        GPIO.output(MotorDB, GPIO.HIGH)
+        GPIO.output(MotorDB, GPIO.LOW)
         GPIO.output(MotorGA, GPIO.HIGH)
         GPIO.output(MotorGB, GPIO.LOW)
 
@@ -115,9 +115,12 @@ if __name__ == '__main__':
         	myThread = EncodersThread()
 		myThread.start()
 
-	        while 1: 
-	                stopMotor()
-        	        print str(compteurEncodeurD) +" "+ str(compteurEncodeurG)
-
+	        while 1:
+			if: (compteurEncodeurD < compteurEncodeurG):
+				turnLeft()
+			elif (compteurEncodeurD > compteurEncodeurG):
+				turnRight()
+			else:
+				forward()
 	except KeyboardInterrupt:
 		stopMotor()
