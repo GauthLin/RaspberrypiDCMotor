@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import RPi.GPIO as GPIO
 from time import sleep
+from threading import Thread
 
 GPIO.setmode(GPIO.BCM)
 
@@ -21,6 +22,15 @@ CapteurG = 18
 ## Capteur droit
 CapteurD = 25
 
+## Encodeur
+EncodeurD = 7
+EncodeurG = 8
+
+previousEncodeurG = 0
+previousEncodeurD = 0
+compteurEncodeurG = 0 
+compteurEncodeurD = 0
+
 # Configuration des GPIOs
 ## Moteur gauche
 GPIO.setup(MotorGA, GPIO.OUT)
@@ -35,6 +45,10 @@ GPIO.setup(MotorDE, GPIO.OUT)
 ## Capteurs
 GPIO.setup(CapteurD, GPIO.IN)
 GPIO.setup(CapteurG, GPIO.IN)
+
+## Encoder
+GPIO.setup(EncodeurD, GPIO.IN)
+GPIO.setup(EncodeurG, GPIO.IN)
 
 ## Enable les moteurs
 GPIO.output(MotorGE, GPIO.HIGH)
@@ -71,14 +85,39 @@ def turnRight():
         GPIO.output(MotorGA, GPIO.HIGH)
         GPIO.output(MotorGB, GPIO.LOW)
 
+def updateCodeurs():
+	global previousEncodeurG, previousEncodeurD, compteurEncodeurG, compteurEncodeurD
+	
+	outputEncodeurG = GPIO.input(EncodeurG)
+	outputEncodeurD = GPIO.input(EncodeurD)
+
+	if (previousEncodeurG != outputEncodeurG):
+		compteurEncodeurG = compteurEncodeurG + 1
+		previousEncodeurG = outputEncodeurG
+
+	if (previousEncodeurD != outputEncodeurD):
+		compteurEncodeurD = compteurEncodeurD + 1
+		previousEncodeurD = outputEncodeurD
+
+class EncodersThread(Thread):
+	def __init__(self):
+		Thread.__init__(self)
+
+	def run(self):
+		 while True:
+ 			updateCodeurs()
+			sleep(0.001)
+
 # Main
 ## Boucle infinie
-while 1:
-	if (GPIO.input(CapteurG) == False or GPIO.input(CapteurD) == False):
-		backward()
-		sleep(3)
-		turnLeft()
-		sleep(3)
-		forward()
-	else:
-		forward()
+if __name__ == '__main__':
+	try:
+        	myThread = EncodersThread()
+		myThread.start()
+
+	        while 1: 
+	                stopMotor()
+        	        print str(compteurEncodeurD) +" "+ str(compteurEncodeurG)
+
+	except KeyboardInterrupt:
+		stopMotor()
