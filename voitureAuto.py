@@ -40,16 +40,45 @@ GPIO.setup(CapteurG, GPIO.IN)
 GPIO.output(MotorGE, GPIO.HIGH)
 GPIO.output(MotorDE, GPIO.HIGH)
 
+# Definitions de fonction
+def forward():
+        GPIO.output(MotorDA, GPIO.HIGH)
+        GPIO.output(MotorDB, GPIO.LOW)
+        GPIO.output(MotorGA, GPIO.HIGH)
+        GPIO.output(MotorGB, GPIO.LOW)
+
+def stopMotor():
+        GPIO.output(MotorDA, GPIO.LOW)
+        GPIO.output(MotorDB, GPIO.LOW)
+        GPIO.output(MotorGA, GPIO.LOW)
+        GPIO.output(MotorGB, GPIO.LOW)
+
+def backward():
+        GPIO.output(MotorDA, GPIO.LOW)
+        GPIO.output(MotorDB, GPIO.HIGH)
+        GPIO.output(MotorGA, GPIO.LOW)
+        GPIO.output(MotorGB, GPIO.HIGH)
+	
+def turnLeft():
+	GPIO.output(MotorDA, GPIO.HIGH)
+        GPIO.output(MotorDB, GPIO.LOW)
+        GPIO.output(MotorGA, GPIO.LOW)
+        GPIO.output(MotorGB, GPIO.HIGH)
+
+def turnRight():
+	GPIO.output(MotorDA, GPIO.LOW)
+        GPIO.output(MotorDB, GPIO.HIGH)
+        GPIO.output(MotorGA, GPIO.HIGH)
+        GPIO.output(MotorGB, GPIO.LOW)
+
 # Main
 ## Boucle infinie
 while 1:
 	if (GPIO.input(CapteurG) == False or GPIO.input(CapteurD) == False):
-		GPIO.output(MotorDA, GPIO.LOW)
-		GPIO.output(MotorDB, GPIO.LOW)
-		GPIO.output(MotorGA, GPIO.LOW)
-		GPIO.output(MotorGB, GPIO.LOW)
+		backward()
+		sleep(3)
+		turnLeft()
+		sleep(3)
+		forward()
 	else:
-		GPIO.output(MotorDA, GPIO.LOW)
-		GPIO.output(MotorDB, GPIO.HIGH)
-		GPIO.output(MotorGA, GPIO.LOW)
-		GPIO.output(MotorGB, GPIO.HIGH)
+		forward()
