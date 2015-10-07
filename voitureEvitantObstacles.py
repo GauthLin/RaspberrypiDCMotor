@@ -69,7 +69,6 @@ def goingForward():
         else:
 		forward()
 
-
 def stopMotor():
         GPIO.output(MotorDA, GPIO.LOW)
         GPIO.output(MotorDB, GPIO.LOW)
@@ -81,16 +80,16 @@ def backward():
         GPIO.output(MotorDB, GPIO.HIGH)
         GPIO.output(MotorGA, GPIO.LOW)
         GPIO.output(MotorGB, GPIO.HIGH)
-	
+
 def turnLeft():
 	GPIO.output(MotorDA, GPIO.HIGH)
         GPIO.output(MotorDB, GPIO.LOW)
-        GPIO.output(MotorGA, GPIO.LOW)
+        GPIO.output(MotorGA, GPIO.HIGH)
         GPIO.output(MotorGB, GPIO.HIGH)
 
 def turnRight():
 	GPIO.output(MotorDA, GPIO.LOW)
-        GPIO.output(MotorDB, GPIO.HIGH)
+        GPIO.output(MotorDB, GPIO.LOW)
         GPIO.output(MotorGA, GPIO.HIGH)
         GPIO.output(MotorGB, GPIO.LOW)
 
@@ -130,5 +129,6 @@ if __name__ == '__main__':
 			else:
 				goingForward()			
 
+			print str(compteurEncodeurD) +" "+ str(compteurEncodeurG)
 	except KeyboardInterrupt:
 		stopMotor()
