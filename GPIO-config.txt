@@ -12,3 +12,6 @@ Si pin 15 = 5V => marche arrière
 
 Capteur Gauche GPIO 25
 Capteur Droit GPIO 18
+
+Codeur Gauche GPIO GPIO 8
+Codeur Droit GPIO 7
