@@ -116,7 +116,11 @@ if __name__ == '__main__':
 		myThread.start()
 
 	        while 1:
-			if: (compteurEncodeurD < compteurEncodeurG):
+			nbTourD = int(compteurEncodeurD / 20)
+			
+			if (nbTourD >= 9):
+				stopMotor()
+			elif (compteurEncodeurD < compteurEncodeurG):
 				turnLeft()
 			elif (compteurEncodeurD > compteurEncodeurG):
 				turnRight()
